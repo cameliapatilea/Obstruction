@@ -173,6 +173,7 @@ class Joc:
                     nr = nr + 1
         return nr
 
+
     def estimeaza_scor1(self, h):
         # trebuie verificata tabla daca nu a fost umpluta
         if self.verifica_tabla() is False and self.jucator == self.JMAX: # se bazeaza pe maximizarea scorului, fiind JMAX, adica calculatorul
@@ -183,6 +184,78 @@ class Joc:
         else:
             return self.scor_jucator(self.JMIN) - self.scor_jucator(self.JMAX)
 
+        # ================================================================================================================================================================================
+    def modifica_tabla2(self, juc, i, j):
+        if i >= self.lin or i < 0 or j >= self.col or j < 0:
+            print("Locul ales nu este corect.")
+            return False
+
+        if self.tabla[i][j] != "_":
+            print("Locul ales este deja ocupat")
+            return False
+        self.tabla[i][j] = juc
+        print("Este randul lui " + juc)
+        simb = ""
+        if juc == self.JMIN:
+            simb = '1'
+        else:
+            simb = '2'
+        ii = [-1, -1, -1, 0, 0, 1, 1, 1]
+        jj = [-1, 0, 1, -1, 1, -1, 0, 1]
+        for k in range(8):
+            if i + ii[k] >= 0 and i + ii[k] < self.lin and j + jj[k] >= 0 and j + jj[k] < self.col:
+                if self.tabla[i + ii[k]][j + jj[k]] != '_':
+                    self.tabla[i + ii[k]][j + jj[k]] = '3'
+                else:
+                    self.tabla[i + ii[k]][j + jj[k]] = simb
+        return True
+
+    def jurul_jucatorului(self, tabla, juc, i, j, lin, col):
+        tabla[i][j] = juc
+        simb = ""
+        if juc == self.JMIN:
+            simb = '1'
+        else:
+            simb = '2'
+        ii = [-1, -1, -1, 0, 0, 1, 1, 1]
+        jj = [-1, 0, 1, -1, 1, -1, 0, 1]
+        for k in range(8):
+            if i + ii[k] >= 0 and i + ii[k] < lin and j + jj[k] >= 0 and j + jj[k] < col:
+                if tabla[i + ii[k]][j + jj[k]] != '_':
+                    tabla[i + ii[k]][j + jj[k]] = '3'
+                else:
+                    tabla[i + ii[k]][j + jj[k]] = simb
+        return tabla
+
+    def scor_jucator2(self, jucator):
+        if jucator == self.JMIN:
+            cauta = '1'
+        else:
+            cauta = '2'
+        nr = 0
+        treiuri = 0
+        # numar cate simboluri am pentru a vedea care dintre ele are scorul mai bun
+        for i in range(self.lin):
+            for j in range(self.col):
+                if self.tabla[i][j] == cauta:
+                    nr = nr + 1
+                elif self.tabla[i][j] == '3':
+                    treiuri = treiuri + 1
+        return nr
+
+    def estimeaza_scor2(self, h):
+        # trebuie verificata tabla daca nu a fost umpluta
+        if self.verifica_tabla() is False and self.jucator == self.JMAX:  # se bazeaza pe maximizarea scorului, fiind JMAX, adica calculatorul
+            return 1000 + h
+        elif self.verifica_tabla() is False and self.jucator == self.JMIN:  # se bazeaza pe minimizarea scorului, fiind JMIN
+            return -1000 - h
+        # in cazul in care nu ma aflu in niciunul dintre cazurile JMIN sau JMAX, trebuie sa returnez diferenta dintre scorurile celor 2 jucatori
+        else:
+            return self.scor_jucator2(self.JMIN) - self.scor_jucator2(self.JMAX)
+
+#=======================================================================================================================================================
+
+
     def mutari_in_tabla(self, jucator):
         lista_mutari = []
         for i in range(self.lin):
@@ -190,10 +263,17 @@ class Joc:
                 if self.tabla[i][j] == self.gol:
                     tablaNoua = copy.deepcopy(self.tabla)
                     tablaNoua[i][j] = jucator
-                    tablaNoua = copy.deepcopy(self.completeaza_in_jurul_jucatorului(tablaNoua, jucator, i, j, self.lin, self.col))
+                    # prima euristica
+                    #  tablaNoua = copy.deepcopy(self.completeaza_in_jurul_jucatorului(tablaNoua, jucator, i, j, self.lin, self.col))
+                    # a doua euristica
+                    tablaNoua = copy.deepcopy(self.jurul_jucatorului(tablaNoua, jucator, i, j, self.lin, self.col))
                     lista_mutari.append(Joc(self.lin, self.col, tablaNoua))
 
         return lista_mutari
+
+
+
+
 
 
     def __str__(self):

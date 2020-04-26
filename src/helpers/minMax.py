@@ -4,7 +4,10 @@ from helpers.joc import Joc
 def min_max(stare):
     # daca am ajuns pe o frunza sau pe tabla nu mai pot fi puse simboluri, inseamna ca tabla este completa si trebuie sa oprim jocul
     if stare.adancime == 0 or stare.tabla_joc.verifica_tabla() is False:
-        stare.scor = stare.tabla_joc.estimeaza_scor1(stare.adancime)
+        # a doua euristica
+        stare.scor = stare.tabla_joc.estimeaza_scor2(stare.adancime)
+        # prima euristica
+        # stare.scor = stare.tabla_joc.estimeaza_scor(stare.adancime)
         return stare
 
     # calculez toate mutarile posibile din starea curenta

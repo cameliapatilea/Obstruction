@@ -16,7 +16,9 @@ class Stare:
             return 'X'
 
     def mutari_stare(self):
+
         lista_mutari = self.tabla_joc.mutari_in_tabla(self.juc_curent)
+
         juc_opus = Stare.schimba_jucator(self.juc_curent)
         l_stari_mutari = [Stare(mutare, juc_opus, self.adancime - 1, parinte = self) for mutare in lista_mutari]
         return l_stari_mutari
