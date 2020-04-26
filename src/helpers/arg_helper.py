@@ -1,6 +1,6 @@
 import getopt
 import sys
-
+# functie ajutatoare pentru a prelua parametrii din linia de comanda, in functie de un anumit format dat
 def get_arguments(argv):
     input_lin = ''
     input_col = ''
@@ -8,6 +8,10 @@ def get_arguments(argv):
     input_dificultate = ''
     input_alg = ''
     input_gui = ''
+    print(
+        "Bine ati venit in jocul Obstruction. Pentru a incepe, trebuie introduse nr de linii, nr de coloane, dintre care cel putin unul sa fie numar par.")
+    print(
+        "De asemenea, daca doriti sa jucati cu X sau cu 0,dificultatea(incepator, mediu,avansat), algoritmul dorit(min-max sau alpha-beta) si daca doriti sa jucati cu ajutorul unei interfete grafice sau nu(se va raspunde cu DA sau NU")
 
     try:
         # se iau in calcul si denumirea argumentelor, nu doar inputul pe care il vreau

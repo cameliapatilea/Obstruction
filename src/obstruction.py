@@ -17,71 +17,76 @@ def input_mutari():
     return newLin, newCol
 
 
-
-
 if __name__ == '__main__':
 
     linie, coloana, juc, dif, alg, gui = get_arguments(sys.argv[1:])
     linie = int(linie)
     coloana = int(coloana)
     ok = False
+    if linie % 2 == 0 or coloana % 2 == 0:
+        ok = True
+
+    if ok == False:
+        print("Introduceti din nou datele, cel putin linia sau coloana trebuie sa fie un numar par.")
+        exit()
     print("Ati ales jucatorul " + juc)
     tabla = Joc(linie, coloana)
     # print(str(tabla))
 
-
+# avand in vedere ca dimensiunea tablei poate sa fie foarte mare, nu ar fi indicat sa setam adancimea prea mare
+# deoarece exista riscul ca programul sa ocupe tot ram-ul si nu va fi oarte friendly cu calculatorul
+# daca ne dorim o precizie mai mare din partea calculatorului, putem seta adancimea 3 si dimensiunea tablei mai mare
+    if dif == "incepator":
+        h = 1
+    elif dif == "mediu":
+        h = 2
+    elif dif == "avansat":
+        h = 3
+    else:
+        print("Nivelul introdus nu este unul acceptat")
     Joc.JMIN = juc
     Joc.JMAX = '0' if Joc.JMIN == 'x' else 'x'
 
+    print("Veti juca cu " + juc)
+    print("Nivelul de dificultate este " + dif)
+    print("Sa inceapa jocul! Succes!")
 
-    # lista = tabla.mutari_in_tabla(juc)
-    """for i in lista:
-        print(str(i))"""
 
-    """ while tabla.verifica_tabla() is True:
-
-        pozX, pozY = input_mutari()
-
-        while tabla.modifica_tabla(juc, pozX, pozY) is False:
-            print("Introduceti din nou coordonatele")
-            pozX, pozY = input_mutari()
-        juc = Stare.schimba_jucator(juc)
-
-        print(str(tabla))"""
-
-    """juc = Stare.schimba_jucator(juc)
-    print("Castigatorul este " + juc)"""
-
-# adancime 1 -incepator
-# adancime 2- mediu
-# adancime 3- avansat
-    stare_curenta = Stare(tabla, juc, 3)
+    # initializarea starii de inceput, cu tabla initializata anterior la prima mutare este goala, jucatorul ales si adancimea data de nivelul de dificutate cerut de jucator
+    stare_curenta = Stare(tabla, juc, h)
+    # verific daca pe tabla mai pot fi puse simboluri de X sau de 0
     while stare_curenta.tabla_joc.verifica_tabla() is True:
+        # daca ma aflu pe cazul de minimizare
         if stare_curenta.juc_curent == Joc.JMIN:
-            raspuns_valid = False
             try:
+                # se citesc coordonatele(linia si coloana) unde vrea jucatorul sa puna simbolul
                 pozX, pozY = input_mutari()
+                # daca tabla nu a putu fi modificata(exista deja un simbol sau se afla in proximitatea unui simbol), se vor introduce din nou coordonatele
                 while stare_curenta.tabla_joc.modifica_tabla(stare_curenta.juc_curent, pozX, pozY) is False:
                     print("Introduceti din nou coordonatele")
                     pozX, pozY = input_mutari()
+                # se schimba jucatorii pentru a putea continua jocul
                 stare_curenta.juc_curent = Stare.schimba_jucator(stare_curenta.juc_curent)
             except ValueError:
                 print("Linia si coloana trebuie sa fie numare intregi, dintre care cel putin unul par")
-            # print(str(stare_curenta.tabla_joc))
+            print(str(stare_curenta.tabla_joc))
         else:
             t_inainte = int(round(time.time() * 1000))
+            # in functie de algoritmul folosit, se va apela una dintre functii
             if alg == "min-max":
                 stare_actualizata = min_max(stare_curenta)
             else:
-                stare_actualizata = alpha_beta(-5000,5000,stare_curenta)
-            print(stare_actualizata.scor)
+                stare_actualizata = alpha_beta(-5000, 5000, stare_curenta)
+            # print(stare_actualizata.scor)
             stare_curenta.tabla_joc = stare_actualizata.stare_aleasa.tabla_joc
             print("Tabla dupa mutarea calculatorului")
             print(str(stare_curenta.tabla_joc))
             t_dupa = int(round(time.time() * 1000))
             print("Calculatorul a \"gandit\" timp de " + str(t_dupa - t_inainte) + " milisecunde.")
             stare_curenta.juc_curent = Stare.schimba_jucator(stare_curenta.juc_curent)
-        # print(str(stare_curenta.tabla_joc))
+    # stiu ca dupa fiecare if schimb jucatorul
+    # indiferent care va pune ultimul pe tabla, va intra pe una din conditii si va schimba iarasi jucatorul
+    # din aceasta cauza este nevoie ca inainte d eprint sa se mai schimbe inca o data jucatorii intre ei
     stare_curenta.juc_curent = Stare.schimba_jucator(stare_curenta.juc_curent)
     print("Castigatorul este " + stare_curenta.juc_curent)
 

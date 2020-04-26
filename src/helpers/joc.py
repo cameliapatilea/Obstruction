@@ -166,6 +166,7 @@ class Joc:
         else:
             cauta = '2'
         nr = 0
+        # numar cate simboluri am pentru a vedea care dintre ele are scorul mai bun
         for i in range(self.lin):
             for j in range(self.col):
                 if self.tabla[i][j] == cauta:
@@ -173,10 +174,12 @@ class Joc:
         return nr
 
     def estimeaza_scor1(self, h):
-        if self.verifica_tabla() is False and self.jucator == self.JMAX:
+        # trebuie verificata tabla daca nu a fost umpluta
+        if self.verifica_tabla() is False and self.jucator == self.JMAX: # se bazeaza pe maximizarea scorului, fiind JMAX, adica calculatorul
             return 1000 + h
-        elif self.verifica_tabla() is False and self.jucator == self.JMIN:
+        elif self.verifica_tabla() is False and self.jucator == self.JMIN: # se bazeaza pe minimizarea scorului, fiind JMIN
             return -1000 - h
+        # in cazul in care nu ma aflu in niciunul dintre cazurile JMIN sau JMAX, trebuie sa returnez diferenta dintre scorurile celor 2 jucatori
         else:
             return self.scor_jucator(self.JMIN) - self.scor_jucator(self.JMAX)
 
