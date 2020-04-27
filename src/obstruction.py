@@ -17,6 +17,7 @@ def input_mutari():
     return newLin, newCol
 
 def euristica1():
+    ture = 0
     linie, coloana, juc, dif, alg, gui = get_arguments(sys.argv[1:])
     linie = int(linie)
     coloana = int(coloana)
@@ -53,6 +54,7 @@ def euristica1():
     stare_curenta = Stare(tabla, juc, h)
     # verific daca pe tabla mai pot fi puse simboluri de X sau de 0
     while stare_curenta.tabla_joc.verifica_tabla() is True:
+        ture = ture + 1
         print("Este randul lui ", Joc.JMIN)
         # daca ma aflu pe cazul de minimizare
         if stare_curenta.juc_curent == Joc.JMIN:
@@ -93,11 +95,12 @@ def euristica1():
     # indiferent care va pune ultimul pe tabla, va intra pe una din conditii si va schimba iarasi jucatorul
     # din aceasta cauza este nevoie ca inainte d eprint sa se mai schimbe inca o data jucatorii intre ei
     stare_curenta.juc_curent = Stare.schimba_jucator(stare_curenta.juc_curent)
+    print("Au fost nevoier de ", ture, " ture")
     print("Castigatorul este " + stare_curenta.juc_curent)
 
 
 def euristica2():
-
+    ture = 0
     linie, coloana, juc, dif, alg, gui = get_arguments(sys.argv[1:])
 
     linie = int(linie)
@@ -135,6 +138,7 @@ def euristica2():
     stare_curenta = Stare(tabla, juc, h)
     # verific daca pe tabla mai pot fi puse simboluri de X sau de 0
     while stare_curenta.tabla_joc.verifica_tabla() is True:
+
         # daca ma aflu pe cazul de minimizare
         if stare_curenta.juc_curent == Joc.JMIN:
             t_inainte = int(round(time.time() * 1000))
@@ -158,6 +162,7 @@ def euristica2():
             print(str(stare_curenta.tabla_joc))
             print("Scorul jucatorului este ", stare_curenta.scor)
         else:
+            ture = ture + 1
             print("Este randul calculatorului")
             t_inainte = int(round(time.time() * 1000))
             # in functie de algoritmul folosit, se va apela una dintre functii
@@ -179,6 +184,7 @@ def euristica2():
     # din aceasta cauza este nevoie ca inainte d eprint sa se mai schimbe inca o data jucatorii intre ei
     stare_curenta.juc_curent = Stare.schimba_jucator(stare_curenta.juc_curent)
     print("Castigatorul este " + stare_curenta.juc_curent)
+    print("Au fost nevoie de " , ture, " ture")
 
 if __name__ == '__main__':
     t1 = int(round(time.time() * 1000))
