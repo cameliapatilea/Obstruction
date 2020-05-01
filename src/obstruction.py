@@ -10,6 +10,8 @@ from helpers.alphaBeta import *
 
 def input_mutari():
     print("Introduceti linia si coloana unde doriti sa fie pus simbolul pt a juca")
+    if input() == 'exit':
+        exit()
     print("Linie = ")
     newLin = int(input())
     print("Coloana = ")
@@ -18,6 +20,8 @@ def input_mutari():
 
 def euristica1():
     ture = 0
+    tureJucator = 0
+    tureCalculator = 0
     linie, coloana, juc, dif, alg, gui = get_arguments(sys.argv[1:])
     linie = int(linie)
     coloana = int(coloana)
@@ -30,11 +34,12 @@ def euristica1():
         exit()
     print("Ati ales jucatorul " + juc)
     tabla = Joc(linie, coloana)
-    # print(str(tabla))
+    print(str(tabla))
 
     # avand in vedere ca dimensiunea tablei poate sa fie foarte mare, nu ar fi indicat sa setam adancimea prea mare
     # deoarece exista riscul ca programul sa ocupe tot ram-ul si nu va fi oarte friendly cu calculatorul
     # daca ne dorim o precizie mai mare din partea calculatorului, putem seta adancimea 3 si dimensiunea tablei mai mare
+
     if dif == "incepator":
         h = 1
     elif dif == "mediu":
@@ -59,6 +64,7 @@ def euristica1():
         # daca ma aflu pe cazul de minimizare
         if stare_curenta.juc_curent == Joc.JMIN:
             t_inainte = int(round(time.time() * 1000))
+            tureJucator += 1
             try:
                 # se citesc coordonatele(linia si coloana) unde vrea jucatorul sa puna simbolul
                 pozX, pozY = input_mutari()
@@ -77,6 +83,7 @@ def euristica1():
         else:
             print("\nEste randul calculatorului")
             t_inainte = int(round(time.time() * 1000))
+            tureCalculator+= 1
             # in functie de algoritmul folosit, se va apela una dintre functii
             if alg == "min-max":
                 stare_actualizata = min_max(stare_curenta)
@@ -95,12 +102,16 @@ def euristica1():
     # indiferent care va pune ultimul pe tabla, va intra pe una din conditii si va schimba iarasi jucatorul
     # din aceasta cauza este nevoie ca inainte d eprint sa se mai schimbe inca o data jucatorii intre ei
     stare_curenta.juc_curent = Stare.schimba_jucator(stare_curenta.juc_curent)
-    print("Au fost nevoier de ", ture, " ture")
-    print("Castigatorul este " + stare_curenta.juc_curent)
+    print("\nAu fost nevoie de ", ture, " ture")
+    print("\nCastigatorul este " + stare_curenta.juc_curent)
+    print("\nJucatorul a jucat ", tureJucator , " ture")
+    print("\nCalculatorul a jucat ", tureCalculator, " ture")
 
 
 def euristica2():
     ture = 0
+    tureJucator = 0
+    tureCalculator = 0
     linie, coloana, juc, dif, alg, gui = get_arguments(sys.argv[1:])
 
     linie = int(linie)
@@ -114,7 +125,7 @@ def euristica2():
         exit()
     print("Ati ales jucatorul " + juc)
     tabla = Joc(linie, coloana)
-    # print(str(tabla))
+    print(str(tabla))
 
     # avand in vedere ca dimensiunea tablei poate sa fie foarte mare, nu ar fi indicat sa setam adancimea prea mare
     # deoarece exista riscul ca programul sa ocupe tot ram-ul si nu va fi oarte friendly cu calculatorul
@@ -142,11 +153,13 @@ def euristica2():
         # daca ma aflu pe cazul de minimizare
         if stare_curenta.juc_curent == Joc.JMIN:
             t_inainte = int(round(time.time() * 1000))
+            tureJucator += 1
             if Joc.JMIN == 'X':
-                print("Este randul lui X")
+                print("\nEste randul lui X")
             else:
-                print("Este randul lui 0")
+                print("\nEste randul lui 0")
             try:
+
                 # se citesc coordonatele(linia si coloana) unde vrea jucatorul sa puna simbolul
                 pozX, pozY = input_mutari()
                 # daca tabla nu a putu fi modificata(exista deja un simbol sau se afla in proximitatea unui simbol), se vor introduce din nou coordonatele
@@ -165,6 +178,7 @@ def euristica2():
             ture = ture + 1
             print("Este randul calculatorului")
             t_inainte = int(round(time.time() * 1000))
+            tureCalculator += 1
             # in functie de algoritmul folosit, se va apela una dintre functii
             if alg == "min-max":
                 stare_actualizata = min_max(stare_curenta)
@@ -183,14 +197,16 @@ def euristica2():
     # indiferent care va pune ultimul pe tabla, va intra pe una din conditii si va schimba iarasi jucatorul
     # din aceasta cauza este nevoie ca inainte d eprint sa se mai schimbe inca o data jucatorii intre ei
     stare_curenta.juc_curent = Stare.schimba_jucator(stare_curenta.juc_curent)
-    print("Castigatorul este " + stare_curenta.juc_curent)
-    print("Au fost nevoie de " , ture, " ture")
+    print("\nCastigatorul este " + stare_curenta.juc_curent)
+    print("\nAu fost nevoie de " , ture, " ture")
+    print("\nJucatorul a jucat ", tureJucator, " ture")
+    print("\nCalculatorul a jucat ", tureCalculator, " ture")
 
 if __name__ == '__main__':
     t1 = int(round(time.time() * 1000))
     # euristica1()
     euristica2()
     t2 = int(round(time.time() * 1000))
-    print("Programul a rulat timp de ", t2-t1, " milisecunde")
+    print("\nProgramul a rulat timp de ", t2-t1, " milisecunde")
 
 
