@@ -1,6 +1,7 @@
 from helpers.joc import Joc
 
-
+# functie ce primeste ca parametru un obiect de tip Stare
+# implementarea algoritmului min-max
 def min_max(stare):
     # daca am ajuns pe o frunza sau pe tabla nu mai pot fi puse simboluri, inseamna ca tabla este completa si trebuie sa oprim jocul
     if stare.adancime == 0 or stare.tabla_joc.verifica_tabla() is False:

@@ -8,18 +8,24 @@ class Stare:
         self.mutari_posibile = []
         self.stare_aleasa  =None
 
-    # schimbarea jucatorului se face in main(fisierul obstruction.py)
+
+    # primeste ca parametru jucatorul si in functie de care este, il returneaza pe celalalt
     def schimba_jucator( jucator):
         if jucator == 'X':
             return '0'
         else:
             return 'X'
 
+# primeste ca parametru doarself
     def mutari_stare(self):
-
+        # iau lista de mutari pentru jucatorul curent
         lista_mutari = self.tabla_joc.mutari_in_tabla(self.juc_curent)
-
+        # trebuie sa schimb jucatorul si apelez functia de mai sus
         juc_opus = Stare.schimba_jucator(self.juc_curent)
+        # pentru fiecare mutare in lista de mutari, trebuie sa generez o lista de stari
+        # si trebuie sa scad de fiecare data in adancime pana ajung la adancimea 0
+        # de fiecare data voi creea o noua stare cu jucatorul opus, mutarea respectiva din lista de mutari, un pas mai putin la adancime
+        # iar parintele va deveni starea curenta
         l_stari_mutari = [Stare(mutare, juc_opus, self.adancime - 1, parinte = self) for mutare in lista_mutari]
         return l_stari_mutari
 

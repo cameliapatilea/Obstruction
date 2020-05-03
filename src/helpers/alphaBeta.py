@@ -1,6 +1,6 @@
 from helpers.joc import *
 
-
+# functie ce primeste ca parametru intervalul alpha-beta(capetele intervalului) si obiectul de tip Stare pe care se calculeaza
 def alpha_beta(alpha, beta, stare):
     # daca am ajuns pe o frunza sau pe tabla nu mai pot fi puse simboluri, inseamna ca tabla este completa si trebuie sa oprim jocul
     if stare.adancime == 0 or stare.tabla_joc.verifica_tabla() is False:

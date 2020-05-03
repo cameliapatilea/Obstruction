@@ -10,6 +10,7 @@ from helpers.alphaBeta import *
 
 def input_mutari():
     print("Introduceti linia si coloana unde doriti sa fie pus simbolul pt a juca")
+    print("Daca doriti sa parasiti jocul, introduceti exit")
     if input() == 'exit':
         exit()
     print("Linie = ")

@@ -9,9 +9,9 @@ def get_arguments(argv):
     input_alg = ''
     input_gui = ''
     print(
-        "Bine ati venit in jocul Obstruction. Pentru a incepe, trebuie introduse nr de linii, nr de coloane, dintre care cel putin unul sa fie numar par.")
+        "\nBine ati venit in jocul Obstruction. Pentru a incepe, trebuie introduse nr de linii, nr de coloane, dintre care cel putin unul sa fie numar par.")
     print(
-        "De asemenea, daca doriti sa jucati cu X sau cu 0,dificultatea(incepator, mediu,avansat), algoritmul dorit(min-max sau alpha-beta) si daca doriti sa jucati cu ajutorul unei interfete grafice sau nu(se va raspunde cu DA sau NU")
+        "\nDe asemenea, daca doriti sa jucati cu X sau cu 0,dificultatea(incepator, mediu,avansat), algoritmul dorit(min-max sau alpha-beta) si daca doriti sa jucati cu ajutorul unei interfete grafice sau nu(se va raspunde cu DA sau NU")
 
     try:
         # se iau in calcul si denumirea argumentelor, nu doar inputul pe care il vreau
@@ -22,7 +22,7 @@ def get_arguments(argv):
 
         opts, args = getopt.getopt(argv, "hl:c:j:d:a:i", ["lin", "col", "jucator", "dificultate", "alg", "gui"])
     except getopt.GetoptError:
-        print("Inputul nu a fost introduc corect:")
+        print("Inputul nu a fost introdus corect:")
         print('obstruction.py -l <nr_lin> -c <nr_col> -j <jucator> -d <dificultate> -a <algoritm> -i <gui>')
         sys.exit(2)
 
